@@ -1,0 +1,17 @@
+
+  serving static file-in express:
+           https://expressjs.com/en/starter/static-files.html
+
+ 01.  count repeating words in an array: 
+    use const count= (str.match(new RegExp(word, "g"))).length
+ 
+02.  count repeating words in an string: 
+     use let count = arr.filter( ar => ar===word).length
+
+03. object length: Object.keys(obj).length
+
+04. ejs : html allowed to inject javascript. powerful templating engin
+
+   install command: npm add pjs
+
+    

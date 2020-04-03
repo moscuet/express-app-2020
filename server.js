@@ -51,6 +51,11 @@ const app = express()
 // PUT: UPDATING
 //DELET : DELETING
 
+// middleware ejs used to display home (index) file
+app.set('view engine','ejs')  // need to add ejs from terminal: npm install ejs then change index.html to index.ejs
+
+
+
 //Middle ware: it run anytimme when page load
 app.use( (req,res,next) => {
 // folowwing code doesnt work out side(page =req.url) becase id doesnnt have accesss to 'req'
@@ -83,10 +88,23 @@ app.use(bodyParser.json())
 
 // navigation get method take two parameteres: path and a callback fuction. this call back take two parameter : request and response)
 // in express no need to write head/write like in node
-app.get('/', ( (req,res)=>{
-    let pathname = __dirname + '/views/index.html'
-    res.sendFile(pathname)
-} ))
+
+//================   ejs  =================
+app.get('/',  (req,res)=>{
+    // let pathname = __dirname + '/views/index.html'
+    // res.sendFile(pathname) 
+
+    //with ejs ( need to install ejs, change file i.e, idex extension and add : app.set('view engine','ejs') note: folder-name of index.ejs file should be views)
+    //ejs are not much used except some company
+    res.render('index')
+
+} )
+
+app.get('/students', (req,res) => {
+  res.render('students')
+})
+
+
 app.get('/about', ( (req,res)=>{
     let pathname = __dirname + '/views/about.html'
     res.sendFile(pathname)
@@ -99,8 +117,7 @@ app.get('/text', ( (req,res)=>{
     res.send('some text')
 } ))
 
-app.get('/students', ( (req,res)=>{
-    console.log('its get')
+app.get('/students/api', ( (req,res)=>{
     res.send(students)
 } ))
 
@@ -108,7 +125,7 @@ app.get('/students', ( (req,res)=>{
 //=========================     GET   ===============
 
 // getting a student from students by id or firstName
-app.get('/students/:id', ( (req, res) => {
+app.get('/students/api/:id', ( (req, res) => {
     const id= req.params.id 
     const student = students.find(st => st._id == id || st.firstName.toLowerCase() == id.toLowerCase() )
    if(student) {
@@ -131,7 +148,7 @@ app.post('/students', (req,res)=> {
 
 
 //===========================   EDIT / UPDATE     ===================
-app.put('/students/:id', (req, res) => {
+app.put('/students/api/:id', (req, res) => {
     const id= +req.params.id // anything we get as params is string, convert it to number by adding + at the beginning
     students = students.map ( student => {
     if(student._id == id) {
@@ -145,7 +162,7 @@ app.put('/students/:id', (req, res) => {
 
 //=============================    DELET    ===================
 
-app.delete('/students/:id', (req, res) => {
+app.delete('/students/api/:id', (req, res) => {
     const id= +req.params.id // anything we get as params is string, convert it to number by adding + at the beginning
     students = students.filter ( student => student._id != id)
 
